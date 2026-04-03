@@ -15,7 +15,7 @@ encoder = joblib.load("encoder.pkl")
 # ---------------- CACHE DATA (VERY IMPORTANT FIX) ----------------
 @st.cache_data
 def load_data():
-    df = pd.read_excel("DATASET.xlsx")
+    df = pd.read_excel("sample_data.xlsx")
     return df
 
 # ---------------- SIDEBAR ----------------
