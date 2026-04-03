@@ -12,7 +12,7 @@ model = joblib.load("churn_model.pkl")
 scaler = joblib.load("scaler.pkl")
 encoder = joblib.load("encoder.pkl")
 
-# ---------------- CACHE DATA (VERY IMPORTANT FIX) ----------------
+# ---------------- CACHE DATA ----------------
 @st.cache_data
 def load_data():
     df = pd.read_excel("sample_data.xlsx")
@@ -44,6 +44,9 @@ if page == "Home":
 elif page == "Churn Prediction":
 
     st.title("⚠️ Churn Prediction")
+
+    # ✅ NEW LINE (Improvement)
+    st.info("Adjust the inputs to predict customer churn risk")
 
     col1, col2 = st.columns(2)
 
@@ -81,7 +84,6 @@ elif page == "EDA Dashboard":
 
     st.title("📊 Data Dashboard")
 
-    # ✅ FAST LOAD (cached)
     df = load_data()
 
     # KPI
@@ -90,22 +92,24 @@ elif page == "EDA Dashboard":
 
     col1.metric("Total Rows", len(df))
     col2.metric("Total Columns", len(df.columns))
-    col3.metric("Missing Values", df.isnull().sum().sum())
+    col3.metric("Missing Values", int(df.isnull().sum().sum()))
 
-    # Preview
-    st.subheader("Dataset Preview")
+    # ✅ UPDATED TITLES
+    st.subheader("📄 Dataset Preview")
     st.dataframe(df.head())
 
-    # Stats
-    st.subheader("Basic Statistics")
+    st.subheader("📊 Statistical Summary")
     st.write(df.describe())
 
-    # Charts
-    st.subheader("Distribution Plot")
+    st.subheader("📈 Data Distribution")
     fig1 = px.histogram(df, x=df.columns[0])
     st.plotly_chart(fig1, use_container_width=True)
 
     if len(df.columns) > 1:
-        st.subheader("Scatter Plot")
+        st.subheader("🔍 Feature Relationship")
         fig2 = px.scatter(df, x=df.columns[0], y=df.columns[1])
         st.plotly_chart(fig2, use_container_width=True)
+
+# ---------------- FOOTER ----------------
+st.markdown("---")
+st.caption("Built by M7 - PulseIQ Dashboard Project")
